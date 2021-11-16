@@ -142,13 +142,20 @@
                             let changeCamera = document.getElementById('flip-button')
 
                             changeCamera.addEventListener('click',(event)=>{
-                                let streamData = ""
+                                streamData = null
                                 streamData =  navigator.mediaDevices.getUserMedia({
                                     audio: true,
                                     video: {
                                         facingMode: {exact: 'environment'}
                                     }
                                 })
+
+                                let disableStreamData = streamData.then((r)=>{
+                                        //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
+                                        //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
+                                        r.getTracks().forEach(track => track.enabled = true)
+                                    })
+                                    return disableStreamData
                                 
                             })
 

@@ -136,7 +136,9 @@
                         onGetUserMedia: function () {
                             let streamData =  navigator.mediaDevices.getUserMedia({
                                 audio: true,
-                                video: true
+                                video: {
+                                    facingMode: 'environment'
+                                }
                             })
 
                             video.addEventListener('pause', (event) => {
@@ -167,19 +169,19 @@
                                 streamData =  navigator.mediaDevices.getUserMedia({
                                     audio: true,
                                     video: {
-                                        facingMode: theFacingMode
+                                        facingMode: 'user'
                                     }
                                 })
 
-                                let enableStreamData = streamData.then((r)=>{
-                                    if (front) {
-                                        r.facingMode = 'user'
-                                    }else{
-                                        r.facingMode = 'environment'
-                                    }
+//                                 let enableStreamData = streamData.then((r)=>{
+//                                     if (front) {
+//                                         r.facingMode = 'user'
+//                                     }else{
+//                                         r.facingMode = 'environment'
+//                                     }
                                         
-                                })
-                                return enableStreamData
+//                                 })
+//                                 return enableStreamData
                             })
                             return streamData
                         }

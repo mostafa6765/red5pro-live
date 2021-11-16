@@ -29,7 +29,6 @@
         var token = getCookie("authToken");
         var not_allow = false;
         var front = false;
-        var theStart = 1;
         // check user login
 
         if (window.location !== window.parent.location) {
@@ -53,11 +52,11 @@
             const url = new URL(url_string);
             return url.searchParams.get(param);
         }
-        // document.getElementById("flip-button").onclick = function() {
-        //     console.log(front);
-        //     publisher.init();
-        //     front = !front;
-        // };
+        document.getElementById("flip-button").onclick = function() {
+            console.log(front);
+            publisher.init();
+            front = !front;
+        };
         var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;
         var dheight = window.innerHeight > 0 ? window.innerHeight : screen.width;
 
@@ -87,190 +86,102 @@
                 const connectionParam = await response.json();
                 console.log(connectionParam);
                 // Create a new instance of the WebRTC publisher.
-                let facingChange = document.getElementById('flip-button')
-                    facingChange.addEventListener('click', (event) => {
-                        alert('front: '+ front)
-                        front = !front
-                        
-                        if (front) {
-                            publisher
-                            .init({
-                                protocol: "wss",
-                                port: 443,
-                                host: "streammanager.mypremo.com",
-                                app: "streammanager",
-                                streamName: connectionParam.name,
-                                rtcConfiguration: {
-                                    iceServers: [{
-                                        urls: "stun:stun2.l.google.com:19302",
-                                    }, ],
-                                    iceCandidatePoolSize: 2,
-                                    bundlePolicy: "max-bundle",
-                                }, // See https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary
-                                connectionParams: {
-                                    host: connectionParam.serverAddress,
-                                    app: connectionParam.scope,
+
+                // Initialize
+                publisher
+                    .init({
+                        protocol: "wss",
+                        port: 443,
+                        host: "streammanager.mypremo.com",
+                        app: "streammanager",
+                        streamName: connectionParam.name,
+                        rtcConfiguration: {
+                            iceServers: [{
+                                urls: "stun:stun2.l.google.com:19302",
+                            }, ],
+                            iceCandidatePoolSize: 2,
+                            bundlePolicy: "max-bundle",
+                        }, // See https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary
+                        connectionParams: {
+                            host: connectionParam.serverAddress,
+                            app: connectionParam.scope,
+                        },
+                        streamMode: "live",
+                        mediaElementId: "red5pro-publisher",
+                        bandwidth: {
+                            audio: 56,
+                            video: 512,
+                        },
+                        mediaConstraints: {
+                            audio: true,
+                            video: {
+                                width: {
+                                    max: 420,
+                                    ideal: 420,
+                                    min: 360,
                                 },
-                                streamMode: "live",
-                                mediaElementId: "red5pro-publisher",
-                                bandwidth: {
-                                    audio: 56,
-                                    video: 512,
+                                height: {
+                                    exact: 640,
+                                    // max: 660,
+                                    // ideal: 480,
+                                    // min: 360
                                 },
-                                mediaConstraints: {
+                                frameRate: {
+                                    min: 8,
+                                    max: 24,
+                                },
+                            },
+                        },
+
+                        onGetUserMedia: function () {
+                            let streamData =  navigator.mediaDevices.getUserMedia({
+                                audio: true,
+                                video: true
+                            })
+
+                            let changeCamera = document.getElementById('flip-button')
+
+                            changeCamera.addEventListener('click',(event)=>{
+                                streamData =  navigator.mediaDevices.getUserMedia({
                                     audio: true,
                                     video: {
-                                        width: {
-                                            max: 420,
-                                            ideal: 420,
-                                            min: 360,
-                                        },
-                                        height: {
-                                            exact: 640,
-                                            // max: 660,
-                                            // ideal: 480,
-                                            // min: 360
-                                        },
-                                        frameRate: {
-                                            min: 8,
-                                            max: 24,
-                                        },
-                                        facingMode: front ? 'user' : 'environment'
-                                    },
-                                },
+                                        facingMode: 'environment'
+                                    }
+                                })
+                                console.log(streamData)
+                                return streamData
+                            })
 
-                                onGetUserMedia: function () {
-
-                                    let streamData =  navigator.mediaDevices.getUserMedia({
-                                        audio: true,
-                                        video: {
-                                            facingMode: front ? 'user' : 'environment'
-                                        }
+                            video.addEventListener('pause', (event) => {
+                                    console.log(event);
+                                    let disableStreamData = streamData.then((r)=>{
+                                        //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
+                                        //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
+                                        r.getTracks().forEach(track => track.enabled = false)
                                     })
-
-                                    video.addEventListener('pause', (event) => {
-                                            console.log(event);
-                                            let disableStreamData = streamData.then((r)=>{
-                                                //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
-                                                //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
-                                                r.getTracks().forEach(track => track.enabled = false)
-                    
-                                            })
-                                            return disableStreamData
-                                    });
-
-                                    video.addEventListener('play', (event) => {
-                                            console.log(event);
-                                            let enableStreamData = streamData.then((r)=>{
-                                                // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
-                                                // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
-                                                r.getTracks().forEach(track => track.enabled = true)
-                                            })
-                                            return enableStreamData
-                                    });
-                                    
-                                    return streamData
-                                }
-                            })
-                            .then(function() {
-                                // Invoke the publish action.
-                                return publisher.publish();
-                            })
-                            .catch(function(error) {
-                                // A fault occurred while trying to initialize and publish the stream.
-                                console.error(error);
+                                    return disableStreamData
                             });
-                        } else {
-                            publisher
-                            .init({
-                                protocol: "wss",
-                                port: 443,
-                                host: "streammanager.mypremo.com",
-                                app: "streammanager",
-                                streamName: connectionParam.name,
-                                rtcConfiguration: {
-                                    iceServers: [{
-                                        urls: "stun:stun2.l.google.com:19302",
-                                    }, ],
-                                    iceCandidatePoolSize: 2,
-                                    bundlePolicy: "max-bundle",
-                                }, // See https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary
-                                connectionParams: {
-                                    host: connectionParam.serverAddress,
-                                    app: connectionParam.scope,
-                                },
-                                streamMode: "live",
-                                mediaElementId: "red5pro-publisher",
-                                bandwidth: {
-                                    audio: 56,
-                                    video: 512,
-                                },
-                                mediaConstraints: {
-                                    audio: true,
-                                    video: {
-                                        width: {
-                                            max: 420,
-                                            ideal: 420,
-                                            min: 360,
-                                        },
-                                        height: {
-                                            exact: 640,
-                                            // max: 660,
-                                            // ideal: 480,
-                                            // min: 360
-                                        },
-                                        frameRate: {
-                                            min: 8,
-                                            max: 24,
-                                        },
-                                        facingMode: front ? 'user' : 'environment'
-                                    },
-                                },
 
-                                onGetUserMedia: function () {
-
-                                    let streamData =  navigator.mediaDevices.getUserMedia({
-                                        audio: true,
-                                        video: {
-                                            facingMode: front ? 'user' : 'environment'
-                                        }
+                            video.addEventListener('play', (event) => {
+                                    console.log(event);
+                                    let enableStreamData = streamData.then((r)=>{
+                                        // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
+                                        // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
+                                        r.getTracks().forEach(track => track.enabled = true)
                                     })
-
-                                    video.addEventListener('pause', (event) => {
-                                            console.log(event);
-                                            let disableStreamData = streamData.then((r)=>{
-                                                //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
-                                                //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
-                                                r.getTracks().forEach(track => track.enabled = false)
-                    
-                                            })
-                                            return disableStreamData
-                                    });
-
-                                    video.addEventListener('play', (event) => {
-                                            console.log(event);
-                                            let enableStreamData = streamData.then((r)=>{
-                                                // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
-                                                // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
-                                                r.getTracks().forEach(track => track.enabled = true)
-                                            })
-                                            return enableStreamData
-                                    });
-                                    
-                                    return streamData
-                                }
-                            })
-                            .then(function() {
-                                // Invoke the publish action.
-                                return publisher.publish();
-                            })
-                            .catch(function(error) {
-                                // A fault occurred while trying to initialize and publish the stream.
-                                console.error(error);
+                                    return enableStreamData
                             });
+                            return streamData
                         }
                     })
-                
+                    .then(function() {
+                        // Invoke the publish action.
+                        return publisher.publish();
+                    })
+                    .catch(function(error) {
+                        // A fault occurred while trying to initialize and publish the stream.
+                        console.error(error);
+                    });
             });
         })(window.red5prosdk);
     </script>

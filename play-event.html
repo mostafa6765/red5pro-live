@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- *Recommended WebRTC Shim -->
+    <script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
+</head>
+
+<body>
+    <div>
+        <video id="red5pro-subscriber" class="v-player" controls autoplay></video>
+    </div>
+    <!-- Red5 Pro SDK -->
+    <script src="https://www.red5pro.com/demo/scripts/red5pro-sdk.min.js"></script>
+    <!-- Create Pub/Sub -->
+    <script>
+        var token = getCookie("authToken");
+        var not_allow = false;
+        // check if page not open in iframe
+        if (window.location !== window.parent.location) {
+            not_allow = false;
+        } else {
+            not_allow = true;
+        }
+
+        //check user events
+
+        // check time for live
+
+        //
+
+        if (not_allow) {
+            //    window.location.href = "/";
+        }
+
+        var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;
+        var dheight = window.innerHeight > 0 ? window.innerHeight : screen.width;
+
+        setTimeout(function() {
+            console.log("ready!");
+        }, 3000);
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        function getServerInfo(param) {
+            const url_string = window.location;
+            const url = new URL(url_string);
+            return url.searchParams.get(param);
+        }
+
+        (function(red5prosdk) {
+            var eventStreemName = 'live-test-kamal-11';
+            let subscriberRequest = new Request(
+                "https://streammanager.mypremo.com/streammanager/api/4.0/event/live/" +
+                eventStreemName +
+                "?action=subscribe"
+            );
+
+            fetch(subscriberRequest).then(async function(response) {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const connectionParam = await response.json();
+                console.log(connectionParam);
+                // Create a new instance of the WebRTC subcriber.
+                var subscriber = new red5prosdk.RTCSubscriber();
+
+                // Initialize
+                subscriber
+                    .init({
+                        protocol: "wss",
+                        port: 443,
+                        host: "streammanager.mypremo.com",
+                        app: "streammanager",
+                        streamName: eventStreemName,
+                        rtcConfiguration: {
+                            iceServers: [{
+                                urls: "stun:stun2.l.google.com:19302",
+                            }, ],
+                            iceCandidatePoolSize: 2,
+                            bundlePolicy: "max-bundle",
+                        },
+                        connectionParams: {
+                            host: connectionParam.serverAddress,
+                            app: connectionParam.scope,
+                        },
+
+                        mediaElementId: "red5pro-subscriber",
+                        subscriptionId: "mystream" + Math.floor(Math.random() * 0x10000).toString(16),
+                        videoEncoding: "NONE",
+                        audioEncoding: "NONE",
+                    })
+                    .then(function(subscriber) {
+                        // `subcriber` is the WebRTC Subscriber instance.
+                        return subscriber.subscribe();
+                    })
+                    .then(function(subscriber) {
+                        // subscription is complete.
+                        // playback should begin immediately due to
+                        //   declaration of `autoplay` on the `video` element.
+                    })
+                    .catch(function(error) {
+                        // A fault occurred while trying to initialize and playback the stream.
+                        console.error(error);
+                    });
+            });
+        })(window.red5prosdk);
+    </script>
+</body>
+<style>
+    .v-player {
+        height: auto;
+        width: 100%;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+    }
+</style>
+
+</html>

@@ -140,7 +140,7 @@
 //                             })
 
                             let changeCamera = document.getElementById('flip-button')
-
+                            let streamData
                             changeCamera.addEventListener('click',(event)=>{
                                 streamData =  navigator.mediaDevices.getUserMedia({
                                     audio: true,
@@ -171,7 +171,7 @@
                                     })
                                     return enableStreamData
                             });
-                            //return streamData
+                            return streamData
                         }
                     })
                     .then(function() {

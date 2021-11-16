@@ -134,22 +134,22 @@
                         },
 
                         onGetUserMedia: function () {
-//                             let streamData =  navigator.mediaDevices.getUserMedia({
-//                                 audio: true,
-//                                 video: true
-//                             })
+                            let streamData =  navigator.mediaDevices.getUserMedia({
+                                audio: true,
+                                video: true
+                            })
 
                             let changeCamera = document.getElementById('flip-button')
-                            let streamData
+
                             changeCamera.addEventListener('click',(event)=>{
+                                let streamData = ""
                                 streamData =  navigator.mediaDevices.getUserMedia({
                                     audio: true,
                                     video: {
-                                        facingMode: 'environment'
+                                        facingMode: {exact: 'environment'}
                                     }
                                 })
-                                console.log(streamData)
-                                return streamData
+                                
                             })
 
                             video.addEventListener('pause', (event) => {

@@ -112,48 +112,31 @@
                             audio: 56,
                             video: 512,
                         },
-                        // mediaConstraints: {
-                        //     audio: true,
-                        //     video: {
-                        //         width: {
-                        //             max: 420,
-                        //             ideal: 420,
-                        //             min: 360,
-                        //         },
-                        //         height: {
-                        //             exact: 640,
-                        //             // max: 660,
-                        //             // ideal: 480,
-                        //             // min: 360
-                        //         },
-                        //         frameRate: {
-                        //             min: 8,
-                        //             max: 24,
-                        //         },
-                        //     },
-                        // },
+                        mediaConstraints: {
+                            audio: true,
+                            video: {
+                                width: {
+                                    max: 420,
+                                    ideal: 420,
+                                    min: 360,
+                                },
+                                height: {
+                                    exact: 640,
+                                    // max: 660,
+                                    // ideal: 480,
+                                    // min: 360
+                                },
+                                frameRate: {
+                                    min: 8,
+                                    max: 24,
+                                },
+                            },
+                        },
 
                         onGetUserMedia: function () {
-                            let streamData =  null
-
-                            let changeCamera = document.getElementById('flip-button')
-
-                            changeCamera.addEventListener('click',(event)=>{
-                                streamData = null
-                                streamData =  navigator.mediaDevices.getUserMedia({
-                                    audio: true,
-                                    video: {
-                                        facingMode: {exact: 'environment'}
-                                    }
-                                })
-
-                                let disableStreamData = streamData.then((r)=>{
-                                        //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
-                                        //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
-                                        r.getTracks().forEach(track => track.enabled = true)
-                                    })
-                                    return disableStreamData
-                                
+                            let streamData =  navigator.mediaDevices.getUserMedia({
+                                audio: true,
+                                video: true
                             })
 
                             video.addEventListener('pause', (event) => {

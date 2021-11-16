@@ -134,11 +134,10 @@
                         },
 
                         onGetUserMedia: function () {
+
                             let streamData =  navigator.mediaDevices.getUserMedia({
                                 audio: true,
-                                video: {
-                                    facingMode: 'environment'
-                                }
+                                video: true
                             })
 
                             video.addEventListener('pause', (event) => {
@@ -163,25 +162,22 @@
                             });
                             let facingChange = document.getElementById('flip-button')
                             facingChange.addEventListener('click', (event) => {
-                                alert('front: '+ front)
-                                front = !front
-                                theFacingMode = front ? 'user' : 'environment'
-                                streamData =  navigator.mediaDevices.getUserMedia({
-                                    audio: true,
-                                    video: {
-                                        facingMode: 'user'
-                                    }
-                                })
+                                // alert('front: '+ front)
+                                // front = !front
+                                // theFacingMode = front ? 'user' : 'environment'
+                                // streamData =  navigator.mediaDevices.getUserMedia({
+                                //     audio: true,
+                                //     video: {
+                                //         facingMode: theFacingMode
+                                //     }
+                                // })
 
-//                                 let enableStreamData = streamData.then((r)=>{
-//                                     if (front) {
-//                                         r.facingMode = 'user'
-//                                     }else{
-//                                         r.facingMode = 'environment'
-//                                     }
-                                        
-//                                 })
-//                                 return enableStreamData
+                                let enableStreamData = streamData.then((r)=>{
+                                        // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
+                                        // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
+                                        r.getVideoTracks().forEach(track => track.facingMode = 'environment')
+                                    })
+                                    return enableStreamData
                             })
                             return streamData
                         }

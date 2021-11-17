@@ -146,13 +146,16 @@
                 }
                 let aaa = document.getElementById('flip-button')
                 aaa.addEventListener('click',(event) => {
-                    front = !front
+                    let theMode = localStorage.getItem('cameraMode')
+                    if (theMode === 'user') {
+                        localStorage.setItem('cameraMode', 'environment')
+                    }
                     publisher.unpublish()
                     setTimeout(() => {
-                        start(front ? 'user' :'environment')
+                        start(localStorage.getItem('cameraMode') ?? 'user')
                     }, 2000);
                 })
-
+                localStorage.setItem('cameraMode', 'user')
                 start('user')
 
                 function handlePublisherEvent (event) {

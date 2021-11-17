@@ -114,7 +114,9 @@
                             let streamData =  navigator.mediaDevices.getUserMedia({
                                 audio: true,
                                 video: {
-                                    facingMode: abc
+                                    facingMode: {
+                                        exact: abc
+                                    }
                                 }
                             })
 

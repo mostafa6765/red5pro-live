@@ -54,8 +54,17 @@
         }
         document.getElementById("flip-button").onclick = function() {
             console.log(front);
-            publisher.init();
             front = !front;
+
+            publisher.init({
+                mediaConstraints: {
+                    audio: true,
+                    video: {
+                        facingMode: front ? "user" : "environment"
+                    }
+                }
+            });
+            
         };
         var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;
         var dheight = window.innerHeight > 0 ? window.innerHeight : screen.width;

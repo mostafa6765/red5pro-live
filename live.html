@@ -140,15 +140,14 @@
                                 let bb = document.getElementById("flip-button")
                                 bb.addEventListener('click', (event) => {
                                     
-                                    let a = streamData.applyConstraints({
-                                        video: {
-                                            facingMode: 'user'
-                                        }
+                                    let a = streamData.then((r) => {
+                                        r.getVideoTracks()[0].facingMode = "user"
+                                        console.log(r.getTracks())
                                     })
                                     return a
                                 })
                             
-                                //return streamData
+                                return streamData
                             }
                     })
                     .then(function() {

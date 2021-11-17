@@ -158,15 +158,15 @@
                                     return enableStreamData
                             });
 
-                            // let bb = document.getElementById("flip-button")
-                            // bb.addEventListener('click', (event) => {
-                            //     let enableStreamData = streamData.then((r)=>{
-                            //             const track = r.getVideoTracks()[0];
-                            //             track.facingMode = 'environment'
-                            //             console.log(track)
-                            //         })
-                            //         return enableStreamData
-                            // })
+                                let bb = document.getElementById("flip-button")
+                                bb.addEventListener('click', (event) => {
+                                    streamData =  navigator.mediaDevices.getUserMedia({
+                                        audio: true,
+                                        video: {
+                                            facingMode: 'user'
+                                        }
+                                    })
+                                })
                             
                                 return streamData
                             }

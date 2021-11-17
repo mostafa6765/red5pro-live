@@ -52,11 +52,11 @@
             const url = new URL(url_string);
             return url.searchParams.get(param);
         }
-        document.getElementById("flip-button").onclick = function() {
+        {# document.getElementById("flip-button").onclick = function() {
             let a =  navigator.mediaDevices.getSupportedConstraints()
             console.log(alert(a['facingMode']))
             
-        };
+        }; #}
         var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;
         var dheight = window.innerHeight > 0 ? window.innerHeight : screen.width;
 
@@ -164,10 +164,13 @@
                                 let enableStreamData = streamData.then((r)=>{
                                         const track = r.getVideoTracks()[0];
                                         track.applyConstraints({
-                                            video: false
+                                            video: {
+                                                facingMode: 'environment'
+                                            }
                                         })
-                                        .then(() => {
-                                            console.log('hm')
+                                        .then((responseTrack) => {
+                                            return res
+                                            console.log(responseTrack)
                                             // Do something with the track such as using the Image Capture API.
                                         })
                                         .catch(e => {

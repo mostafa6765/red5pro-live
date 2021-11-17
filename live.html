@@ -154,7 +154,6 @@
                     }else{
                         localStorage.setItem('cameraMode', 'user')
                     }
-                    publisher.destroy()
                     publisher.unpublish()
                     setTimeout(() => {
                         start(localStorage.getItem('cameraMode') ?? 'user')

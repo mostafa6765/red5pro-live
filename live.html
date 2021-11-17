@@ -161,21 +161,15 @@
                                         const track = r.getVideoTracks()[0];
                                         track.applyConstraints({
                                             video: {
-                                                facingMode: 'environment'
+                                                facingMode: {
+                                                    exact: 'environment'
+                                                }
                                             }
                                         })
-                                        .then((responseTrack) => {
-                                            console.log(responseTrack)
-                                            return responseTrack
-                                            // Do something with the track such as using the Image Capture API.
-                                        })
-                                        .catch(e => {
-                                            console.log(e)
-                                            // The constraints could not be satisfied by the available devices.
-                                        });
                                     })
                                     return enableStreamData
                             })
+                            console.log(streamData.getConstraints())
                             return streamData
                         }
                     })

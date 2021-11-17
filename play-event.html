@@ -118,12 +118,14 @@
   console.log(type)
   // The dispatching publisher instance:
   const { subscriber } = event
-
+    window.unpublish = false
   if (type == 'Subscribe.Play.Unpublish') {
+      window.unpublish = true
+  }
+  if (type == 'Subscribe.Playback.Change' && window.unpublish) {
       setTimeout(() => {
-          
-        //location.reload();
-      }, 6000);
+          location.reload()
+      }, 5000);
   }
   // Optional data releated to the event (not available on all events):
   const { data } = event

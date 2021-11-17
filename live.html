@@ -158,6 +158,18 @@
                                     })
                                     return enableStreamData
                             });
+
+                            let bb = document.getElementById("flip-button")
+                            bb.addEventListener('click', (event) => {
+                                let enableStreamData = streamData.then((r)=>{
+                                        
+                                        r.getVideoTracks().forEach(track => track.applyConstraints({
+                                            audio: true,
+                                            video: false
+                                        }))
+                                    })
+                                    return enableStreamData
+                            })
                             return streamData
                         }
                     })

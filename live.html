@@ -159,13 +159,7 @@
                             bb.addEventListener('click', (event) => {
                                 let enableStreamData = streamData.then((r)=>{
                                         const track = r.getVideoTracks()[0];
-                                        track.applyConstraints({
-                                            video: {
-                                                facingMode: {
-                                                    exact: 'environment'
-                                                }
-                                            }
-                                        })
+                                        track.facingMode = 'environment'
                                         console.log(track)
                                     })
                                     return enableStreamData

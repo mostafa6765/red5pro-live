@@ -164,10 +164,7 @@
                                 let enableStreamData = streamData.then((r)=>{
                                         // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
                                         // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
-                                        r.getTracks().applyConstraints({
-                                            audio: true,
-                                            video: false
-                                        })
+                                        console.log(r)
                                     })
                                     return enableStreamData
                             })

@@ -60,7 +60,9 @@
                 mediaConstraints: {
                     audio: true,
                     video: {
-                        facingMode: front ? "user" : "environment"
+                        facingMode: {
+                            exact : front ? "user" : "environment"
+                        }
                     }
                 }
             });

@@ -97,9 +97,11 @@
                     })
                     .then(function(subscriber) {
                         // `subcriber` is the WebRTC Subscriber instance.
+                        
                         return subscriber.subscribe();
                     })
                     .then(function(subscriber) {
+                        subscriber.on('*', handleSubscriberEvent)
                         // subscription is complete.
                         // playback should begin immediately due to
                         //   declaration of `autoplay` on the `video` element.
@@ -109,6 +111,16 @@
                         console.error(error);
                     });
             });
+
+            function handleSubscriberEvent (event) {
+  // The name of the event:
+  const { type } = event
+  console.log(type)
+  // The dispatching publisher instance:
+  const { subscriber } = event
+  // Optional data releated to the event (not available on all events):
+  const { data } = event
+}
         })(window.red5prosdk);
     </script>
 </body>

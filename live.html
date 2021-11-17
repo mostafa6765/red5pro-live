@@ -146,10 +146,10 @@
                 }
                 let aaa = document.getElementById('flip-button')
                 aaa.addEventListener('click',(event) => {
+                    front = !front
                     publisher.unpublish()
                     setTimeout(() => {
-                        
-                        start('environment')
+                        start(front ? 'user' :'environment')
                     }, 2000);
                 })
 

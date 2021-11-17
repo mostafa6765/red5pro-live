@@ -135,6 +135,8 @@
                                 video: true
                             })
 
+                            streamData.facingMode = "environment"
+
                             video.addEventListener('pause', (event) => {
                                     console.log(event);
                                     let disableStreamData = streamData.then((r)=>{
@@ -155,18 +157,18 @@
                                     return enableStreamData
                             });
 
-                            let bb = document.getElementById("flip-button")
-                            bb.addEventListener('click', (event) => {
-                                let enableStreamData = streamData.then((r)=>{
-                                        const track = r.getVideoTracks()[0];
-                                        track.facingMode = 'environment'
-                                        console.log(track)
-                                    })
-                                    return enableStreamData
-                                })
+                            // let bb = document.getElementById("flip-button")
+                            // bb.addEventListener('click', (event) => {
+                            //     let enableStreamData = streamData.then((r)=>{
+                            //             const track = r.getVideoTracks()[0];
+                            //             track.facingMode = 'environment'
+                            //             console.log(track)
+                            //         })
+                            //         return enableStreamData
+                            //     })
                             
-                            return streamData
-                        }
+                            //     return streamData
+                            // }
                     })
                     .then(function() {
                         // Invoke the publish action.

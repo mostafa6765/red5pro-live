@@ -132,10 +132,11 @@
                         onGetUserMedia: function () {
                             let streamData =  navigator.mediaDevices.getUserMedia({
                                 audio: true,
-                                video: true
+                                video: {
+                                    facingMode: 'environment'
+                                }
                             })
 
-                            streamData.facingMode = "environment"
 
                             video.addEventListener('pause', (event) => {
                                     console.log(event);

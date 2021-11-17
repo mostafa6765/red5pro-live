@@ -162,9 +162,16 @@
                             let bb = document.getElementById("flip-button")
                             bb.addEventListener('click', (event) => {
                                 let enableStreamData = streamData.then((r)=>{
-                                        // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
-                                        // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
-                                        console.log(r)
+                                        const track = r.getVideoTracks()[0];
+                                        track.applyConstraints({
+                                            video: false
+                                        })
+                                        .then(() => {
+                                            // Do something with the track such as using the Image Capture API.
+                                        })
+                                        .catch(e => {
+                                            // The constraints could not be satisfied by the available devices.
+                                        });
                                     })
                                     return enableStreamData
                             })

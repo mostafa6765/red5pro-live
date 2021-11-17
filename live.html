@@ -167,9 +167,11 @@
                                             video: false
                                         })
                                         .then(() => {
+                                            console.log('hm')
                                             // Do something with the track such as using the Image Capture API.
                                         })
                                         .catch(e => {
+                                            console.log(e)
                                             // The constraints could not be satisfied by the available devices.
                                         });
                                     })

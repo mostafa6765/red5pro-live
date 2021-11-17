@@ -120,13 +120,11 @@
   const { subscriber } = event
     window.unpublish = false
   if (type == 'Subscribe.Play.Unpublish') {
-      window.unpublish = true
+    setTimeout(() => {
+        location.reload();
+    }, 5000);
   }
-  if (type == 'Subscribe.Playback.Change' && window.unpublish) {
-      setTimeout(() => {
-          location.reload()
-      }, 5000);
-  }
+  
   // Optional data releated to the event (not available on all events):
   const { data } = event
 }

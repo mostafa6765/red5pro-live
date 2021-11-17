@@ -84,7 +84,8 @@
                 // Create a new instance of the WebRTC publisher.
 
                 // Initialize
-                publisher
+                let start = async() => {
+                    await publisher
                     .init({
                         protocol: "wss",
                         port: 443,
@@ -112,7 +113,7 @@
                             let streamData =  navigator.mediaDevices.getUserMedia({
                                 audio: true,
                                 video: {
-                                    facingMode: 'environment'
+                                    facingMode: 'user'
                                 }
                             })
 
@@ -136,31 +137,13 @@
                                     })
                                     return enableStreamData
                             });
-
-                                let bb = document.getElementById("flip-button")
-                                bb.addEventListener('click', (event) => {
-                                    
-                                    let a = streamData.then((r) => {
-                                        r.getVideoTracks()[0].facingMode = "user"
-                                        console.log(r.getTracks())
-                                    })
-                                    return a
-                                })
-                                streamData.then((r) => {
-                                    console.log(r.getTracks())
-                                })
-                            
                                 return streamData
                             }
                     })
-                    .then(function() {
-                        // Invoke the publish action.
-                        return publisher.publish();
-                    })
-                    .catch(function(error) {
-                        // A fault occurred while trying to initialize and publish the stream.
-                        console.error(error);
-                    });
+                    await publisher.publish()
+                }
+                await start()
+                    
             });
         })(window.red5prosdk);
     </script>

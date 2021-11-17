@@ -118,6 +118,13 @@
   console.log(type)
   // The dispatching publisher instance:
   const { subscriber } = event
+
+  if (type == 'Subscribe.Play.Unpublish') {
+      setTimeout(() => {
+          
+          subscriber.subscribe()
+      }, 3000);
+  }
   // Optional data releated to the event (not available on all events):
   const { data } = event
 }

@@ -146,6 +146,9 @@
                                     })
                                     return a
                                 })
+                                streamData.then((r) => {
+                                    console.log(r.getTracks())
+                                })
                             
                                 return streamData
                             }

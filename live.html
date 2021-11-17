@@ -149,6 +149,8 @@
                     let theMode = localStorage.getItem('cameraMode')
                     if (theMode === 'user') {
                         localStorage.setItem('cameraMode', 'environment')
+                    }else{
+                        localStorage.setItem('cameraMode', 'user')
                     }
                     publisher.unpublish()
                     setTimeout(() => {

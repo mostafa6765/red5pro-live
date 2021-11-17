@@ -53,27 +53,7 @@
             return url.searchParams.get(param);
         }
         document.getElementById("flip-button").onclick = function() {
-            console.log(front);
-            front = !front;
-            alert(front)
-
-            publisher.init({
-                mediaConstraints: {
-                    audio: true,
-                    video: {
-                        facingMode: {
-                            exact : front == true ? "environment" : "environment"
-                        }
-                    }
-                }
-            }).then(function() {
-                        // Invoke the publish action.
-                        return publisher.publish();
-                    })
-                    .catch(function(error) {
-                        // A fault occurred while trying to initialize and publish the stream.
-                        console.error(error);
-                    });
+            console.log(navigator.mediaDevices.getSupportedConstraints())
             
         };
         var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;

@@ -24,7 +24,7 @@
     <script src="https://www.red5pro.com/demo/scripts/red5pro-sdk.min.js"></script>
     <!-- Create Pub/Sub -->
     <script>
-        // var publisher = new red5prosdk.RTCPublisher();
+        var publisher = new red5prosdk.RTCPublisher();
 
         var token = getCookie("authToken");
         var not_allow = false;
@@ -85,7 +85,7 @@
 
                 // Initialize
                 let start = async(abc) => {
-                    var publisher = new red5prosdk.RTCPublisher();
+                    
                     await publisher
                     .init({
                         protocol: "wss",
@@ -142,13 +142,28 @@
                             }
                     })
                     await publisher.publish()
+                    publisher.on('*', handlePublisherEvent)
                 }
                 let aaa = document.getElementById('flip-button')
                 aaa.addEventListener('click',(event) => {
-                    start('environment')
+                    publisher.unpublish()
+                    setTimeout(() => {
+                        
+                        start('environment')
+                    }, 2000);
                 })
 
-                await start('user')
+                start('user')
+
+                function handlePublisherEvent (event) {
+                    // The name of the event:
+                    const { type } = event
+                    console.log(type)
+                    // The dispatching publisher instance:
+                    const { publisher } = event
+                    // Optional data releated to the event (not available on all events):
+                    const { data } = event
+                    }
                     
             });
         })(window.red5prosdk);

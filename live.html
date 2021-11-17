@@ -53,7 +53,8 @@
             return url.searchParams.get(param);
         }
         document.getElementById("flip-button").onclick = function() {
-            console.log(navigator.mediaDevices.getSupportedConstraints())
+            let a =  navigator.mediaDevices.getSupportedConstraints()
+            console.log(alert(a['facingMode']))
             
         };
         var dwith = window.innerWidth > 0 ? window.innerWidth : screen.width;

@@ -141,6 +141,67 @@
                             }
                     })
                     await publisher.publish()
+
+                    let aaa = document.getElementById('flip-button')
+                    aaa.addEventListener('click',(event) => {
+                        await publisher
+                    .init({
+                        protocol: "wss",
+                        port: 443,
+                        host: "streammanager.mypremo.com",
+                        app: "streammanager",
+                        streamName: connectionParam.name,
+                        rtcConfiguration: {
+                            iceServers: [{
+                                urls: "stun:stun2.l.google.com:19302",
+                            }, ],
+                            iceCandidatePoolSize: 2,
+                            bundlePolicy: "max-bundle",
+                        }, // See https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary
+                        connectionParams: {
+                            host: connectionParam.serverAddress,
+                            app: connectionParam.scope,
+                        },
+                        streamMode: "live",
+                        mediaElementId: "red5pro-publisher",
+                        bandwidth: {
+                            audio: 56,
+                            video: 512,
+                        },
+                        onGetUserMedia: function () {
+                            let streamData =  navigator.mediaDevices.getUserMedia({
+                                audio: true,
+                                video: {
+                                    facingMode: 'enviroement'
+                                }
+                            })
+
+
+                            video.addEventListener('pause', (event) => {
+                                    console.log(event);
+                                    let disableStreamData = streamData.then((r)=>{
+                                        //video off ::  r.getVideoTracks().forEach(track => track.enabled = false)
+                                        //mute audio::  r.getAudioTracks().forEach(track => track.enabled = false)
+                                        r.getTracks().forEach(track => track.enabled = false)
+                                    })
+                                    return disableStreamData
+                            });
+
+                            video.addEventListener('play', (event) => {
+                                    console.log(event);
+                                    let enableStreamData = streamData.then((r)=>{
+                                        // video on :: r.getVideoTracks().forEach(track => track.enabled = true)
+                                        // unmute audio:: r.getAudioTracks().forEach(track => track.enabled = true)
+                                        r.getTracks().forEach(track => track.enabled = true)
+                                    })
+                                    return enableStreamData
+                            });
+                                return streamData
+                            }
+                    })
+                    await publisher.publish()
+
+                    })
                 }
                 await start()
                     

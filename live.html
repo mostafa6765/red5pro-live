@@ -114,7 +114,9 @@
                     mediaConstraints: {
                             audio: true,
                             video: {
-                                facingMode: facingMode,
+                                facingMode: {
+                                    exact: facingMode
+                                },
                                 width: {
                                     max: 420,
                                     ideal: 420,

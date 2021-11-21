@@ -148,9 +148,6 @@
             console.log(type)
             // The dispatching publisher instance:
             const { publisher } = event
-            if(type === 'Publisher.Connection.Closed') {
-                 publisher.publish()
-             }
             // Optional data releated to the event (not available on all events):
             const { data } = event
         }

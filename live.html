@@ -159,6 +159,7 @@
         l = document.getElementById('flip-button')
         
         l.addEventListener('click', (event)=>{
+            video.srcObject = null
             publisher.unpublish()
             setTimeout(() => {
                 start(window.red5prosdk, 'environment')
@@ -166,6 +167,7 @@
         })
         lp = document.getElementById('flip-button-2')
         lp.addEventListener('click', (event)=>{
+            video.srcObject = null
             publisher.unpublish()
             setTimeout(() => {
                 start(window.red5prosdk, 'user')

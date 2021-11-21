@@ -111,16 +111,27 @@
                         audio: 56,
                         video: 512,
                     },
-                    onGetUserMedia: function () {
-
-                        let streamData = navigator.mediaDevices.getUserMedia({
+                    mediaConstraints: {
                             audio: true,
                             video: {
-                                facingMode: facingMode
-                            }
-                        })
-                        return streamData
-                    }
+                                facingMode: facingMode,
+                                width: {
+                                    max: 420,
+                                    ideal: 420,
+                                    min: 360,
+                                },
+                                height: {
+                                    exact: 640,
+                                    // max: 660,
+                                    // ideal: 480,
+                                    // min: 360
+                                },
+                                frameRate: {
+                                    min: 8,
+                                    max: 24,
+                                },
+                            },
+                    },
                 })
                 await publisher.publish()
                 publisher.on('*', handlePublisherEvent)

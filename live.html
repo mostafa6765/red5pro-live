@@ -153,12 +153,33 @@
         };
         start(window.red5prosdk,'user')
 
+        const capture = async facingMode => {
+            let streami
+    const options = {
+      audio: false,
+      video: {
+        facingMode,
+      },
+    };
+
+    try {
+      if (streami) {
+        const tracks = streami.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      streami = await navigator.mediaDevices.getUserMedia(options);
+    } catch (e) {
+      alert(e);
+      return;
+    }
+    video.srcObject = null;
+    video.srcObject = streami;
+    video.play();
+  }
+
         l = document.getElementById('flip-button')
         l.addEventListener('click', (event)=>{
-            publisher.unpublish()
-            setTimeout(() => {
-                start(window.red5prosdk,'environment')
-            },500);
+            capture('environment')
         })
     </script>
     <style>

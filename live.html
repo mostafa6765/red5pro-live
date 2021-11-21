@@ -7,11 +7,8 @@
 </head>
 
 <body>
-    <button id="flip-button-user">
-      user
-    </button>
-    <button id="flip-button-environment">
-        environment
+    <button id="flip-button">
+      change camera mode
     </button>
     <!-- video containers -->
     <!-- publisher -->
@@ -148,30 +145,21 @@
                     publisher.on('*', handlePublisherEvent)
                     console.log(publisher.getPeerConnection())
                 }
-                let modeUser = document.getElementById('flip-button-user')
-                modeUser.addEventListener('click',(event) => {
-                    localStorage.setItem('cameraMode','user')
+                let aaa = document.getElementById('flip-button')
+                aaa.addEventListener('click',(event) => {
+                    let theMode = localStorage.getItem('cameraMode')
+                    if (theMode === 'user') {
+                        localStorage.setItem('cameraMode', 'environment')
+                    }else{
+                        localStorage.setItem('cameraMode', 'user')
+                    }
                     publisher.unpublish()
                     setTimeout(() => {
-                        start('user')
-                        location.reload();
+                        start(localStorage.getItem('cameraMode') ?? 'user')
                     }, 2000);
                 })
-
-                let modeEnv = document.getElementById('flip-button-environment')
-                modeEnv.addEventListener('click',(event) => {
-                    localStorage.setItem('cameraMode','environemnt')
-                    publisher.unpublish()
-                    setTimeout(() => {
-                        start('environment')
-                        location.reload();
-                    }, 2000);
-                })
-
-                
-                let myMode = localStorage.getItem('cameraMode') ?? 'user'
-                alert(myMode)
-                start(myMode)
+                localStorage.setItem('cameraMode', 'user')
+                start('user')
 
                 function handlePublisherEvent (event) {
                     // The name of the event:

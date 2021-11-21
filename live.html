@@ -171,17 +171,17 @@
                 btnFront = document.getElementById('btnFront')
         
                 btnFront.addEventListener('click', (event)=>{
-                    publisher.unpublish()
+                    publisher.unpublish().then(red5Init(connectionParam,'user'))
                     setTimeout(() => {
-                        red5Init(connectionParam,'user')
+                        //red5Init(connectionParam,'user')
                     }, 1000);
                 })
                 btnBack = document.getElementById('btnBack')
                 btnBack.addEventListener('click', (event)=>{
 
-                    publisher.unpublish()
+                    publisher.unpublish().then(red5Init(connectionParam,'environment'))
                     setTimeout(() => {
-                        red5Init(connectionParam,'environment')
+                        // red5Init(connectionParam,'environment')
                     }, 1000);       
                 })                
                 

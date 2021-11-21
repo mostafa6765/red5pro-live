@@ -155,16 +155,9 @@
 
         l = document.getElementById('flip-button')
         l.addEventListener('click', (event)=>{
-            var constraints = { audio: true, video: { facingMode: 'environement' } };
-            navigator.mediaDevices.getUserMedia(constraints)
-            .then(function(mediaStream) {
-            //var video = document.querySelector('video');
-            video.srcObject = mediaStream;
-            video.onloadedmetadata = function(e) {
-                video.play();
-            };
+            publisher.unpublish().then(()=>{
+                start(window.red5prosdk, 'enviornment')
             })
-            .catch(function(err) { console.log(err.name + ": " + err.message); })
         })
     </script>
     <style>

@@ -28,6 +28,7 @@
     <!-- Create Pub/Sub -->
     <script>
         var publisher = new red5prosdk.RTCPublisher();
+        var connection = publisher.getPeerConnection();
 
         function myStream(){
             return publisher.getMediaStream();
@@ -169,18 +170,79 @@
                 btnFront = document.getElementById('btnFront')
         
                 btnFront.addEventListener('click', (event)=>{
-                    publisher.unpublish()
-                    setTimeout(() => {
-                        red5Init(connectionParam,'user')
-                    }, 7000);
+                    // publisher.unpublish()
+                    // setTimeout(() => {
+                    //     red5Init(connectionParam,'user')
+                    // }, 7000);
+                    mediaConstraints = {
+                        audio: true,
+                        video: {
+                            facingMode: 'user'
+                        }
+                    }
+                    navigator.mediaDevices.getUserMedia(mediaConstraints)
+                    .then(function (stream) {
+                        var connection = publisher.getPeerConnection();
+                        var senders = connection.getSenders();
+                        var replacePromise;
+                        // 2. Update the media tracks on senders through connection.
+                        var i = senders.length;
+                        while ( --i > -1) {
+                        // 3. Replace the currently sending streams based on track kind
+                        if (senders[i].track.kind === 'video') {
+                            replacePromise = senders[i].replaceTrack(stream.getVideoTracks()[0]);
+                        } else {
+                            senders[i].replaceTrack(stream.getAudioTracks()[0]);
+                        }
+                        }
+                        console.log(senders)
+                        // 4. Update the video display with new stream.
+                        video.src = null
+                        document.getElementById('red5pro-publisher').srcObject = stream;
+                    })
+                    .catch (function (error) {
+                        console.error('Could not replace track : ' + error.message);
+                    });
+                    
                 })
                 btnBack = document.getElementById('btnBack')
                 btnBack.addEventListener('click', (event)=>{
 
-                    publisher.unpublish()
-                    setTimeout(() => {
-                        red5Init(connectionParam,'environment')
-                    }, 7000);
+                    // publisher.unpublish()
+                    // setTimeout(() => {
+                    //     red5Init(connectionParam,'environment')
+                    // }, 7000);
+                    mediaConstraints = {
+                        audio: true,
+                        video: {
+                            facingMode: 'environmemnt'
+                        }
+                    }
+                    navigator.mediaDevices.getUserMedia(mediaConstraints)
+                    .then(function (stream) {
+                        var connection = publisher.getPeerConnection();
+                        var senders = connection.getSenders();
+                        var replacePromise;
+                        // 2. Update the media tracks on senders through connection.
+                        var i = senders.length;
+                        while ( --i > -1) {
+                        // 3. Replace the currently sending streams based on track kind
+                        if (senders[i].track.kind === 'video') {
+                            replacePromise = senders[i].replaceTrack(stream.getVideoTracks()[0]);
+                        } else {
+                            senders[i].replaceTrack(stream.getAudioTracks()[0]);
+                        }
+                        }
+                        console.log(senders)
+                        // 4. Update the video display with new stream.
+                        video.src = null
+                        // 4. Update the video display with new stream.
+                        document.getElementById('red5pro-publisher').srcObject = stream;
+                    })
+                    .catch (function (error) {
+                        console.error('Could not replace track : ' + error.message);
+                    });
+                    
                 })                
                 
 

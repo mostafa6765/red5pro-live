@@ -164,23 +164,73 @@
                 // Create a new instance of the WebRTC publisher.
                 red5Init(connectionParam,facingMode) 
                 
-                l = document.getElementById('flip-button')
+                // l = document.getElementById('flip-button')
         
-                l.addEventListener('click', (event)=>{
-                    video.srcObject = null
-                    publisher.unpublish()
-                    setTimeout(() => {
-                        red5Init(connectionParam,'environment')
-                    }, 1000);
-                })
-                lp = document.getElementById('flip-button-2')
-                lp.addEventListener('click', (event)=>{
-                    video.srcObject = null;
-                    publisher.unpublish()
-                    setTimeout(() => {
-                        red5Init(connectionParam,'user')
-                    }, 1000);
-                })
+                // l.addEventListener('click', (event)=>{
+                //     video.srcObject = null
+                //     publisher.unpublish()
+                //     setTimeout(() => {
+                //         red5Init(connectionParam,'environment')
+                //     }, 1000);
+                // })
+                // lp = document.getElementById('flip-button-2')
+                // lp.addEventListener('click', (event)=>{
+                //     video.srcObject = null;
+                //     publisher.unpublish()
+                //     setTimeout(() => {
+                //         red5Init(connectionParam,'user')
+                //     }, 1000);
+                // })
+                  
+                        const videoElm = video;
+                        const btnFront = document.querySelector('#flip-button');
+                        const btnBack = document.querySelector('#flip-button-2');
+
+                        const supports = navigator.mediaDevices.getSupportedConstraints();
+                        if (!supports['facingMode']) {
+                            alert('Browser Not supported!');
+                            return;
+                        }
+
+                        let streamk;
+
+                        const capture = async facingMode => {
+                            const options = {
+                                audio: false,
+                                video: {
+                                    facingMode,
+                                },
+                            };
+
+                            try {
+                                if (streamk) {
+                                    const tracks = streamk.getTracks();
+                                    tracks.forEach(track => track.stop());
+                                }
+                                streamk = await navigator.mediaDevices.getUserMedia(options);
+                            } catch (e) {
+                                alert(e);
+                                return;
+                            }
+                            videoElm.srcObject = null;
+                            videoElm.srcObject = streamk;
+                            videoElm.play();
+                            //publisher.unpublish()
+                            // setTimeout(() => {
+                            //     red5Init(connectionParam,'user')
+                            // }, 1000);
+                        }
+
+                        btnBack.addEventListener('click', () => {
+                            capture('environment');
+                        });
+
+                        btnFront.addEventListener('click', () => {
+                            capture('user');
+                        });
+                    
+                
+                //
 
             });
         };

@@ -155,9 +155,11 @@
 
         l = document.getElementById('flip-button')
         l.addEventListener('click', (event)=>{
-            publisher.unpublish().then(()=>{
+            publisher.unpublish()
+            setTimeout(() => {
                 start(window.red5prosdk, 'environment')
-            })
+            }, 1000);
+
         })
     </script>
     <style>

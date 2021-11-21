@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- *Recommended WebRTC Shim -->
+    <script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
+</head>
+
+<body>
+    <button id="btnFront">
+      front
+    </button>
+    <button id="btnBack">
+        Back camera
+      </button>
+    <!-- video containers -->
+    <!-- publisher -->
+    <div>
+        <video id="video2"></video>
+    </div>
+    <!-- <div>
+        <video id="red5pro-publishermk" muted autoplay fullscreen full-width playsinline controls disablePictureInPicture></video>
+    </div> -->
+
+    <!-- Start  -->
+
+    <!-- END -->
+
+    <!-- Red5 Pro SDK -->
+    <script src="https://www.red5pro.com/demo/scripts/red5pro-sdk.min.js"></script>
+    <!-- Create Pub/Sub -->
+    <script>
+
+  const videoElm = document.getElementById('video2');
+  const btnFront = document.querySelector('#btnFront');
+  const btnBack = document.querySelector('#btnBack');
+
+  const supports = navigator.mediaDevices.getSupportedConstraints();
+  if (!supports['facingMode']) {
+    alert('Browser Not supported!');
+  }
+
+  let stream;
+
+  const capture = async facingMode => {
+    const options = {
+      audio: false,
+      video: {
+        facingMode,
+      },
+    };
+
+    try {
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      stream = await navigator.mediaDevices.getUserMedia(options);
+    } catch (e) {
+      alert(e);
+      
+    }
+    videoElm.srcObject = null;
+    videoElm.srcObject = stream;
+    videoElm.play();
+  }
+
+  btnBack.addEventListener('click', () => {
+    capture('environment');
+  });
+
+  btnFront.addEventListener('click', () => {
+    capture('user');
+  });
+
+
+    </script>
+    <style>
+        #red5pro-publisher {
+            width: 100vw;
+            height: 80vh;
+            min-height: 480px;
+            max-width: 428px !important;
+        }
+        
+        #flip-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            background-color: red;
+            z-index: 999999999;
+        }
+        
+        video::-webkit-media-controls-volume-slider {
+            display: none;
+        }
+        
+        video::-webkit-media-controls-mute-button {
+            display: none;
+        }
+    </style>
+</body>
+
+</html>

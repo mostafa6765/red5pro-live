@@ -150,9 +150,9 @@
                 }
                 let modeUser = document.getElementById('flip-button-user')
                 modeUser.addEventListener('click',(event) => {
+                    localStorage.setItem('cameraMode','user')
                     publisher.unpublish()
                     setTimeout(() => {
-                        //start(localStorage.getItem('cameraMode') ?? 'user')
                         start('user')
                         location.reload();
                     }, 2000);
@@ -160,16 +160,17 @@
 
                 let modeEnv = document.getElementById('flip-button-environment')
                 modeEnv.addEventListener('click',(event) => {
+                    localStorage.setItem('cameraMode','environemnt')
                     publisher.unpublish()
                     setTimeout(() => {
-                        //start(localStorage.getItem('cameraMode') ?? 'user')
                         start('environment')
                         location.reload();
                     }, 2000);
                 })
 
-                localStorage.setItem('cameraMode', 'user')
+                
                 let myMode = localStorage.getItem('cameraMode') ?? 'user'
+                alert(myMode)
                 start(myMode)
 
                 function handlePublisherEvent (event) {

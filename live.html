@@ -154,10 +154,17 @@
         start(window.red5prosdk,'user')
 
         l = document.getElementById('flip-button')
+        
         l.addEventListener('click', (event)=>{
+            let myCameraMode = 'user'
+        if (myCameraMode == 'user') {
+            myCameraMode = 'environment'
+        }else{
+            myCameraMode = 'user'
+        }
             publisher.unpublish()
             setTimeout(() => {
-                start(window.red5prosdk, 'environment')
+                start(window.red5prosdk, myCameraMode)
             }, 1000);
 
         })

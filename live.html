@@ -16,9 +16,6 @@
     <!-- video containers -->
     <!-- publisher -->
     <div>
-        <video id="video2"></video>
-    </div>
-    <div>
         <video id="red5pro-publisher" muted autoplay fullscreen full-width playsinline controls disablePictureInPicture></video>
     </div>
 
@@ -167,74 +164,27 @@
                 // Create a new instance of the WebRTC publisher.
                 red5Init(connectionParam,facingMode) 
                 
-                // l = document.getElementById('flip-button')
+                btnFront = document.getElementById('btnFront')
         
-                // l.addEventListener('click', (event)=>{
-                //     video.srcObject = null
-                //     publisher.unpublish()
-                //     setTimeout(() => {
-                //         red5Init(connectionParam,'environment')
-                //     }, 1000);
-                // })
-                // lp = document.getElementById('flip-button-2')
-                // lp.addEventListener('click', (event)=>{
-                //     video.srcObject = null;
-                //     publisher.unpublish()
-                //     setTimeout(() => {
-                //         red5Init(connectionParam,'user')
-                //     }, 1000);
-                // })                
-                //
+                btnFront.addEventListener('click', (event)=>{
+                    publisher.unpublish()
+                    setTimeout(() => {
+                        red5Init(connectionParam,'user')
+                    }, 1000);
+                })
+                btnBack = document.getElementById('btnBack')
+                btnBack.addEventListener('click', (event)=>{
+
+                    publisher.unpublish()
+                    setTimeout(() => {
+                        red5Init(connectionParam,'environment')
+                    }, 1000);
+                })                
+                
 
             });
         };
         start(window.red5prosdk,'user')
-
-
-
-  const videoElm = document.getElementById('video2');
-  const btnFront = document.querySelector('#btnFront');
-  const btnBack = document.querySelector('#btnBack');
-
-  const supports = navigator.mediaDevices.getSupportedConstraints();
-  if (!supports['facingMode']) {
-    alert('Browser Not supported!');
-  }
-
-  let stream;
-
-  const capture = async facingMode => {
-    const options = {
-      audio: false,
-      video: {
-        facingMode,
-      },
-    };
-
-    try {
-      if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-      }
-      stream = await navigator.mediaDevices.getUserMedia(options);
-    } catch (e) {
-      alert(e);
-      
-    }
-    videoElm.srcObject = null;
-    videoElm.srcObject = stream;
-    videoElm.play();
-  }
-
-  btnBack.addEventListener('click', () => {
-    capture('environment');
-  });
-
-  btnFront.addEventListener('click', () => {
-    capture('user');
-  });
-
-
     </script>
     <style>
         #red5pro-publisher {
@@ -244,10 +194,19 @@
             max-width: 428px !important;
         }
         
-        #flip-button {
-            position: absolute;
-            right: 10px;
-            top: 10px;
+        #btnFront {
+            margin-top: 50px;
+            margin-bottom: 10px;
+            margin-left: 100px;
+            background: none;
+            border: none;
+            background-color: red;
+            z-index: 999999999;
+        }
+        #btnBack {
+            margin-top: 50px;
+            margin-bottom: 10px;
+            margin-left: 10px;
             background: none;
             border: none;
             background-color: red;

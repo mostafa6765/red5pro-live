@@ -151,28 +151,30 @@
                 const connectionParam = await response.json();
                 console.log(connectionParam);
                 // Create a new instance of the WebRTC publisher.
-                red5Init(connectionParam,facingMode)    
+                red5Init(connectionParam,facingMode) 
+                
+                l = document.getElementById('flip-button')
+        
+                l.addEventListener('click', (event)=>{
+                    video.srcObject = null
+                    publisher.unpublish()
+                    setTimeout(() => {
+                        red5Init(connectionParam,'environment')
+                    }, 1000);
+                })
+                lp = document.getElementById('flip-button-2')
+                lp.addEventListener('click', (event)=>{
+                    video.srcObject = null;
+                    publisher.unpublish()
+                    setTimeout(() => {
+                        red5Init(connectionParam,'user')
+                    }, 1000);
+                })
+
             });
         };
         start(window.red5prosdk,'user')
 
-        l = document.getElementById('flip-button')
-        
-        l.addEventListener('click', (event)=>{
-            video.srcObject = null
-            publisher.unpublish()
-            setTimeout(() => {
-                start(window.red5prosdk, 'environment')
-            }, 1000);
-        })
-        lp = document.getElementById('flip-button-2')
-        lp.addEventListener('click', (event)=>{
-            video.srcObject = null
-            publisher.unpublish()
-            setTimeout(() => {
-                start(window.red5prosdk, 'user')
-            }, 1000);
-        })
     </script>
     <style>
         #red5pro-publisher {

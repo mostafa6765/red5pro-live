@@ -121,18 +121,18 @@
                 })
                 await publisher.publish()
                 publisher.on('*', handlePublisherEvent)
-                console.log(publisher.getPeerConnection())
+                console.log(publisher)
             }
         
-                function handlePublisherEvent(event) {
-                    // The name of the event:
-                    const { type } = event
-                    console.log(type)
-                    // The dispatching publisher instance:
-                    const { publisher } = event
-                    // Optional data releated to the event (not available on all events):
-                    const { data } = event
-                }
+        function handlePublisherEvent(event) {
+            // The name of the event:
+             const { type } = event
+            console.log(type)
+            // The dispatching publisher instance:
+            const { publisher } = event
+            // Optional data releated to the event (not available on all events):
+            const { data } = event
+        }
 
         function start(red5prosdk,facingMode) {
             let broadcastRequest = new Request(
@@ -153,33 +153,18 @@
         };
         start(window.red5prosdk,'user')
 
-        const capture = async facingMode => {
-            let streami
-    const options = {
-      audio: false,
-      video: {
-        facingMode,
-      },
-    };
-
-    try {
-      if (streami) {
-        const tracks = streami.getTracks();
-        tracks.forEach(track => track.stop());
-      }
-      streami = await navigator.mediaDevices.getUserMedia(options);
-    } catch (e) {
-      alert(e);
-      return;
-    }
-    video.srcObject = null;
-    video.srcObject = streami;
-    video.play();
-  }
-
         l = document.getElementById('flip-button')
         l.addEventListener('click', (event)=>{
-            capture('environment')
+            var constraints = { audio: true, video: { facingMode: 'environement' } };
+            navigator.mediaDevices.getUserMedia(constraints)
+            .then(function(mediaStream) {
+            //var video = document.querySelector('video');
+            video.srcObject = mediaStream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
+            })
+            .catch(function(err) { console.log(err.name + ": " + err.message); })
         })
     </script>
     <style>

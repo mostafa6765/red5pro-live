@@ -10,6 +10,9 @@
     <button id="flip-button">
       change camera mode
     </button>
+    <button id="flip-button-2">
+        change camera mode env
+      </button>
     <!-- video containers -->
     <!-- publisher -->
     <div>
@@ -156,17 +159,17 @@
         l = document.getElementById('flip-button')
         
         l.addEventListener('click', (event)=>{
-            let myCameraMode = 'user'
-        if (myCameraMode == 'user') {
-            myCameraMode = 'environment'
-        }else{
-            myCameraMode = 'user'
-        }
             publisher.unpublish()
             setTimeout(() => {
-                start(window.red5prosdk, myCameraMode)
+                start(window.red5prosdk, 'environment')
             }, 1000);
-
+        })
+        lp = document.getElementById('flip-button2')
+        lp.addEventListener('click', (event)=>{
+            publisher.unpublish()
+            setTimeout(() => {
+                start(window.red5prosdk, 'user')
+            }, 1000);
         })
     </script>
     <style>

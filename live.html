@@ -144,6 +144,9 @@
         function handlePublisherEvent(event) {
             // The name of the event:
              const { type } = event
+             if(type === 'Publisher.Connection.Closed') {
+                 event.publisher.publish()
+             }
             console.log(type)
             // The dispatching publisher instance:
             const { publisher } = event

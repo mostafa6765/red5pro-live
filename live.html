@@ -7,11 +7,11 @@
 </head>
 
 <body>
-    <button id="flip-button">
-      change camera mode
+    <button id="btnFront">
+      front
     </button>
-    <button id="flip-button-2">
-        change camera mode env
+    <button id="btnBack">
+        Back camera
       </button>
     <!-- video containers -->
     <!-- publisher -->
@@ -180,61 +180,57 @@
                 //     setTimeout(() => {
                 //         red5Init(connectionParam,'user')
                 //     }, 1000);
-                // })
-                  
-                        const videoElm = video;
-                        const btnFront = document.querySelector('#flip-button');
-                        const btnBack = document.querySelector('#flip-button-2');
-
-                        const supports = navigator.mediaDevices.getSupportedConstraints();
-                        if (!supports['facingMode']) {
-                            alert('Browser Not supported!');
-                            return;
-                        }
-
-                        let streamk;
-
-                        const capture = async facingMode => {
-                            const options = {
-                                audio: false,
-                                video: {
-                                    facingMode,
-                                },
-                            };
-
-                            try {
-                                if (streamk) {
-                                    const tracks = streamk.getTracks();
-                                    tracks.forEach(track => track.stop());
-                                }
-                                streamk = await navigator.mediaDevices.getUserMedia(options);
-                            } catch (e) {
-                                alert(e);
-                                return;
-                            }
-                            videoElm.srcObject = null;
-                            videoElm.srcObject = streamk;
-                            videoElm.play();
-                            //publisher.unpublish()
-                            // setTimeout(() => {
-                            //     red5Init(connectionParam,'user')
-                            // }, 1000);
-                        }
-
-                        btnBack.addEventListener('click', () => {
-                            capture('environment');
-                        });
-
-                        btnFront.addEventListener('click', () => {
-                            capture('user');
-                        });
-                    
-                
+                // })                
                 //
 
             });
         };
         start(window.red5prosdk,'user')
+
+
+
+  const videoElm = video;
+  const btnFront = document.querySelector('#btnFront');
+  const btnBack = document.querySelector('#btnBack');
+
+  const supports = navigator.mediaDevices.getSupportedConstraints();
+  if (!supports['facingMode']) {
+    alert('Browser Not supported!');
+  }
+
+  let stream;
+
+  const capture = async facingMode => {
+    const options = {
+      audio: false,
+      video: {
+        facingMode,
+      },
+    };
+
+    try {
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      stream = await navigator.mediaDevices.getUserMedia(options);
+    } catch (e) {
+      alert(e);
+      
+    }
+    videoElm.srcObject = null;
+    videoElm.srcObject = stream;
+    videoElm.play();
+  }
+
+  btnBack.addEventListener('click', () => {
+    capture('environment');
+  });
+
+  btnFront.addEventListener('click', () => {
+    capture('user');
+  });
+
 
     </script>
     <style>

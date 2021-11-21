@@ -159,7 +159,13 @@
                     }, 2000);
                 })
                 localStorage.setItem('cameraMode', 'user')
-                start('user')
+                let mk = ['user','environment']
+                function random(items) {
+    // "|" for a kinda "int div"
+    return items[items.length * Math.random() | 0];
+}
+alert(random(mk))
+                start(random(mk))
 
                 function handlePublisherEvent (event) {
                     // The name of the event:

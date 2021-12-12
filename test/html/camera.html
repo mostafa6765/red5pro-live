@@ -1,19 +1,9 @@
-
-  
 <!doctype html>
-{{> license}}
 <html>
   <head>
-    {{> meta title='WebRTC Publish Camera Source Test'}}
-    {{> header-scripts}}
-    {{> header-stylesheets}}
   </head>
   <body>
-    {{> top-bar }}
-    {{> navigation isTestPage=true }}
     <div id="app">
-      {{> settings-link}}
-      {{> test-info testTitle='Publish Camera Source Test (WebRTC)'}}
       <div class="stream-section">
         <div class="instructions-block">
           <p class="camera-select-field camera-select-form settings-field settings-collapsable">
@@ -24,8 +14,6 @@
             <button id="publish-button" class="control ui-button" disabled>Publish</button>
           </p>
         </div>
-        {{> status-field-publisher}}
-        {{> statistics-field packets_field='Packets Sent'}}
         <div class="centered">
           <video id="red5pro-publisher" class="red5pro-publisher"
                  controls autoplay playsinline muted>
@@ -33,6 +21,6 @@
         </div>
       </div>
     </div>
-    {{> body-scripts}}
     <script src="index.js"></script>
   </body>
+</html>

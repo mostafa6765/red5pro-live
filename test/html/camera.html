@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="app">
+      <div class="stream-section">
+        <div class="instructions-block">
+          <p class="camera-select-field camera-select-form settings-field settings-collapsable">
+            <label for="camera-select" class="label-style settings-label">Select a Camera:</label>
+            <select id="camera-select" class="control"></select>
+          </p>
+          <p>
+            <button id="publish-button" class="control ui-button" disabled>Publish</button>
+          </p>
+        </div>
+        <div class="centered">
+          <video id="red5pro-publisher" class="red5pro-publisher"
+                 controls autoplay playsinline muted>
+          </video>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
